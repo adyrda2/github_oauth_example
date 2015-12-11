@@ -19,6 +19,7 @@ gem 'rake'
 gem 'shotgun'
 
 gem 'oauth2'
+gem 'rest-client'
 
 
 group :test do

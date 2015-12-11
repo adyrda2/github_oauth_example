@@ -12,9 +12,10 @@
       </p>
     </div>
   <% else %>
-    <form action="/sign_in" method="get">
+    <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= client_id %>">Click here</a> to begin!</a>
+<!--     <form action="/sign_in" method="get">
       <input type="submit" value="Sign In with Github" />
-    </form>
+    </form> -->
   <% end %>
 
 </div>

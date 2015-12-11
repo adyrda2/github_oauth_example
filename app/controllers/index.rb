@@ -1,28 +1,35 @@
 enable :sessions
 
 get '/' do
-  erb :index
+
+  erb :index, :locals => {:client_id => ENV['CLIENT_ID']}
 end
 
-get '/sign_in' do
-  @consumer = OAuth::Consumer.new(ENV['CONSUMER_KEY'], ENV['CONSUMER_SECRET'], :site => "")
+get '/callback' do
 
-  @request_token = @consumer.get_request_token(:oauth_callback => "http://localhost:9393/auth")
+  session_code = request.env['rack.request.query_hash']['code']
 
-  session[:request_token] = @request_token
+  result = RestClient.post('https://github.com/login/oauth/access_token',
+                          {:client_id => ENV['CLIENT_ID'],
+                           :client_secret => ENV['CLIENT_SECRET'],
+                           :code => session_code},
+                           :accept => :json)
 
-  redirect @request_token.authorize_url
+  session[:access_token] = JSON.parse(result)['access_token']
+
+  redirect "/something"
+end
+
+get "/something" do
+  @user = JSON.parse(RestClient.get('https://api.github.com/user',
+                                   {:params => {:access_token => session[:access_token]},
+                                    :accept => :json}))
+
+
+  erb :something
 end
 
 get '/sign_out' do
   session.clear
   redirect '/'
-end
-
-get '/auth' do
-  @request_token = session[:request_token]
-
-  @access_token = @request_token.get_access_token(:oauth_verifer => params[:oauth_verifer])
-
-  erb: :index
 end
