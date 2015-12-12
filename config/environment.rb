@@ -22,6 +22,8 @@ require 'erb'
 
 require 'oauth2'
 require 'rest-client'
+require 'github_api'
+require 'byebug'
 
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
