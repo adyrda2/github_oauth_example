@@ -21,6 +21,7 @@ gem 'shotgun'
 gem 'oauth2'
 gem 'github_api'
 gem 'rest-client'
+gem 'octokit'
 
 
 

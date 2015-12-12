@@ -2,7 +2,7 @@
   <% if @user %>
     <h1> Hello <%= @user["name"]%>!</h1>
 
-    <% @user.each do |key, value| %>
+    <% @user.attrs.each do |key, value| %>
       <p><%= key %>: <%= value %> </p>
     <% end %>
   <% else %>

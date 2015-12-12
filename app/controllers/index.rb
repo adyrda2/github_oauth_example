@@ -22,11 +22,9 @@ get '/sign_in' do
   redirect to GithubAuth.new.authorize
 end
 
-
 get "/something" do
-  @user = JSON.parse(RestClient.get('https://api.github.com/user',
-                                   {:params => {:access_token => session[:access_token]},
-                                    :accept => :json}))
+  client = Octokit::Client.new(:access_token => session[:access_token])
+  @user = client.user
 
   erb :something
 end
