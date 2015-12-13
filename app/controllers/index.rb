@@ -2,17 +2,14 @@ enable :sessions
 
 get '/' do
 
-  erb :index, :locals => {:client_id => ENV['CLIENT_ID']}
+  erb :index
 end
 
 get '/callback' do
-
-  session_code = request.env['rack.request.query_hash']['code']
-
   result = RestClient.post('https://github.com/login/oauth/access_token',
                           {:client_id => ENV['CLIENT_ID'],
                            :client_secret => ENV['CLIENT_SECRET'],
-                           :code => session_code},
+                           :code => params[:code]},
                            :accept => :json)
 
   session[:access_token] = JSON.parse(result)['access_token']
@@ -20,11 +17,14 @@ get '/callback' do
   redirect "/something"
 end
 
-get "/something" do
-  @user = JSON.parse(RestClient.get('https://api.github.com/user',
-                                   {:params => {:access_token => session[:access_token]},
-                                    :accept => :json}))
+get '/sign_in' do
 
+  redirect to GithubAuth.new.authorize
+end
+
+get "/something" do
+  client = Octokit::Client.new(:access_token => session[:access_token])
+  @user = client.user
 
   erb :something
 end

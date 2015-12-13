@@ -19,7 +19,10 @@ gem 'rake'
 gem 'shotgun'
 
 gem 'oauth2'
+gem 'github_api'
 gem 'rest-client'
+gem 'octokit'
+
 
 
 group :test do
@@ -31,4 +34,5 @@ group :test, :development do
   gem 'rspec'
   gem 'factory_girl'
   gem 'faker'
+  gem 'byebug'
 end

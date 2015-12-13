@@ -1,4 +1,11 @@
 <div class="container">
-  <h1> Hello <%= @user["name"]%>!</h1>
+  <% if @user %>
+    <h1> Hello <%= @user["name"]%>!</h1>
 
+    <% @user.attrs.each do |key, value| %>
+      <p><%= key %>: <%= value %> </p>
+    <% end %>
+  <% else %>
+    <h1> on the something page </h1>
+  <% end %>
 </div>
